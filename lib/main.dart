@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart';
+import 'location.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -24,14 +26,27 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   bool isClicked = false;
+  @override
+  void initState() {
+    super.initState();
+    getLocation();
+  }
 
-  void changeColor() async{
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    print(position);
+  void getLocation() async {
+    Location location= Location();
+    await location.getLocation();
+    print(location.long);
+    print(location.lat);
+  }
+
+  void getData() async{
+    Response data= await get('https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22');
+    print(data.statusCode);
   }
 
   @override
   Widget build(BuildContext context) {
+    getData();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
@@ -48,8 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: RaisedButton(
           child: Text("hello"),
-          onPressed: () => changeColor(),
-          color: isClicked==true? Colors.green : Colors.red,
         ),
       )
     );
