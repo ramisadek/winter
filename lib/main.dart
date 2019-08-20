@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+
 import 'location.dart';
+import 'networking.dart';
+
 
 
 void main() => runApp(MyApp());
@@ -25,28 +27,31 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  double longtitude;
+  double latitude;
+  String apiKey='f633f75a3742406ae26270728c2a7ed0';
+
+
   bool isClicked = false;
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getLocationData();
   }
 
-  void getLocation() async {
+  void getLocationData() async {
     Location location= Location();
     await location.getLocation();
-    print(location.long);
-    print(location.lat);
+    longtitude=location.long;
+    latitude=location.lat;
+    NetworkHelper nH = NetworkHelper('https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longtitude&appid=$apiKey');
+    var data = await nH.getData();
+    print(data['sys']['country']);
   }
 
-  void getData() async{
-    Response data= await get('https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22');
-    print(data.statusCode);
-  }
 
   @override
   Widget build(BuildContext context) {
-    getData();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
@@ -58,13 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         centerTitle: true,
-
       ),
-      body: Center(
-        child: RaisedButton(
-          child: Text("hello"),
-        ),
-      )
     );
   }
 }
