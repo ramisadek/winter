@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   geolocator: ^5.1.2
   http: ^0.12.0+2
+  flutter_spinkit: "^4.0.0"
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +52,11 @@ flutter:
     - assets/icons/
     - assets/backgrounds/
 
+  fonts:
+    - family: Spartan MB
+      fonts:
+        - asset: assets/fonts/SpartanMB-Black.otf
+          weight: 900
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

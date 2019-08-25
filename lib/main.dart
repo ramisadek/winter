@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:winter/location_screen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:winter/services/weather_model.dart';
 
-import 'location.dart';
-import 'networking.dart';
 
 
 
@@ -29,8 +30,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   double longtitude;
   double latitude;
-  String apiKey='f633f75a3742406ae26270728c2a7ed0';
-
 
   bool isClicked = false;
   @override
@@ -39,30 +38,36 @@ class _MyHomePageState extends State<MyHomePage> {
     getLocationData();
   }
 
-  void getLocationData() async {
-    Location location= Location();
-    await location.getLocation();
-    longtitude=location.long;
-    latitude=location.lat;
-    NetworkHelper nH = NetworkHelper('https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longtitude&appid=$apiKey');
-    var data = await nH.getData();
-    print(data['sys']['country']);
+  void getLocationData() async{
+    WeatherModel weatherModel = WeatherModel();
+    var data= await weatherModel.getLocationData();
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen(locationWeather: data,);
+    }));
   }
+
+
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.cyan,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('assets/icons/Icon.png',scale: 12,),
-            Text(widget.title)
-          ],
+//      appBar: AppBar(
+//        backgroundColor: Colors.cyan,
+//        title: Row(
+//          mainAxisAlignment: MainAxisAlignment.center,
+//          children: <Widget>[
+//            Image.asset('assets/icons/Icon.png',scale: 12,),
+//            Text(widget.title)
+//          ],
+//        ),
+//        centerTitle: true,
+//      )
+      body: Center(
+        child: SpinKitDoubleBounce(
+          color: Colors.green,
+          size: 100.0,
         ),
-        centerTitle: true,
       ),
     );
   }
