@@ -1,6 +1,6 @@
 # winter
 
-A new Flutter application.
+demo app to learn the connection with REST API
 
 ## Getting Started
 
